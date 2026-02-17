@@ -23,7 +23,7 @@ const safeJson = (obj: any) =>
 const nodeNames: Record<string, string> = {};
 let meshDevice: MeshDevice | null = null;
 
-// Wake Clyde via OpenClaw gateway WebSocket RPC (works without internet!)
+// Wake agent via OpenClaw gateway WebSocket RPC (works without internet!)
 async function wakeAgent(fromName: string, text: string) {
   if (!GATEWAY_TOKEN) {
     console.log("⚠️  No OPENCLAW_TOKEN set, skipping gateway wake");
@@ -168,7 +168,7 @@ async function main() {
     } catch {}
   });
 
-  // Incoming messages → inbox file + wake Clyde
+  // Incoming messages → inbox file + wake agent
   device.events.onMessagePacket.subscribe((msg: any) => {
     const fromId = msg.from?.toString() || "unknown";
     const fromName = nodeNames[fromId] || `Node ${fromId}`;
