@@ -5,7 +5,7 @@ import { writeFileSync, readFileSync, existsSync, unlinkSync } from "fs";
 import { WebSocket } from "ws";
 import { randomUUID } from "crypto";
 
-const SERIAL_PORT = "/dev/cu.usbserial-0001";
+const SERIAL_PORT = process.env.SERIAL_PORT || "/dev/cu.usbserial-0001";
 const OUTBOX_FILE = "/tmp/meshtastic-outbox.txt";
 const INBOX_FILE = "/tmp/meshtastic-inbox.jsonl";
 const DESTINATION_NODE = Number(process.env.DESTINATION_NODE || "0"); // Target node for DMs
@@ -24,7 +24,7 @@ const nodeNames: Record<string, string> = {};
 let meshDevice: MeshDevice | null = null;
 
 // Wake Clyde via OpenClaw gateway WebSocket RPC (works without internet!)
-async function wakeClyde(fromName: string, text: string) {
+async function wakeAgent(fromName: string, text: string) {
   if (!GATEWAY_TOKEN) {
     console.log("⚠️  No OPENCLAW_TOKEN set, skipping gateway wake");
     return;
@@ -126,7 +126,7 @@ async function wakeClyde(fromName: string, text: string) {
     });
 
     ws.on("close", () => {
-      if (connected) console.log("🐾 Woke Clyde via gateway!");
+      if (connected) console.log("🐾 Woke agent via gateway!");
     });
 
     // Safety timeout
@@ -137,10 +137,10 @@ async function wakeClyde(fromName: string, text: string) {
 }
 
 async function main() {
-  console.log(`🐾 Clyde's Meshtastic Bridge`);
+  console.log(`🐾 Meshtastic Bridge`);
   console.log(`📡 Connecting to ${SERIAL_PORT}...`);
   if (GATEWAY_TOKEN) {
-    console.log(`🔑 Gateway token loaded — will wake Clyde on incoming messages`);
+    console.log(`🔑 Gateway token loaded — will wake agent on incoming messages`);
   } else {
     console.log(`⚠️  No OPENCLAW_TOKEN — gateway wake disabled (set env var to enable)`);
   }
@@ -187,8 +187,8 @@ async function main() {
       console.error("Failed to write inbox:", e);
     }
 
-    // Wake Clyde via localhost gateway (no internet needed!)
-    wakeClyde(fromName, text);
+    // Wake agent via localhost gateway (no internet needed!)
+    wakeAgent(fromName, text);
   });
 
   // Configure the device — starts the read loop
@@ -264,7 +264,7 @@ async function main() {
     if (req.method === "GET" && (req.url === "/status" || req.url === "/")) {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify({
-        bridge: "Clyde's Meshtastic Bridge 🐾📡",
+        bridge: "Meshtastic Bridge 🐾📡",
         connected: true,
         nodes: Object.keys(nodeNames).length,
         nodeNames,

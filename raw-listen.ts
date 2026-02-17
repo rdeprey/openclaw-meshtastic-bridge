@@ -1,6 +1,7 @@
 import { SerialPort } from "serialport";
 
-const port = new SerialPort({ path: "/dev/cu.usbserial-0001", baudRate: 115200 });
+const SERIAL_PORT = process.env.SERIAL_PORT || "/dev/cu.usbserial-0001";
+const port = new SerialPort({ path: SERIAL_PORT, baudRate: 115200 });
 
 console.log("🐾 Raw serial listener — watching ALL bytes...\n");
 

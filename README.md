@@ -38,7 +38,7 @@ npm install
 
 Edit `bridge.ts` and set:
 - `SERIAL_PORT` — your radio's serial port (e.g., `/dev/cu.usbserial-0001`)
-- `BECCA_NODE` — the destination node number for DMs
+- `DESTINATION_NODE` — the destination node number for DMs
 
 ### Run
 
@@ -52,10 +52,10 @@ The gateway token is in `~/.openclaw/openclaw.json` under `gateway.auth.token`.
 
 ```bash
 # Copy the plist (edit paths/token first)
-cp com.clyde.meshtastic-bridge.plist ~/Library/LaunchAgents/
+cp com.meshtastic-bridge.plist ~/Library/LaunchAgents/
 
 # Load
-launchctl load ~/Library/LaunchAgents/com.clyde.meshtastic-bridge.plist
+launchctl load ~/Library/LaunchAgents/com.meshtastic-bridge.plist
 
 # Check status
 launchctl list | grep meshtastic
