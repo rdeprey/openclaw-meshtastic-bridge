@@ -71,7 +71,7 @@ launchctl list | grep meshtastic
 
 ## Blog Post
 
-Read the full build story: [How I Gave My AI Assistant a Radio](https://rebeccamdeprey.com) *(coming soon)*
+Read the full build story: [How I Gave My AI Assistant a Radio](https://rebeccamdeprey.com/blog/how-i-gave-my-openclaw-assistant-a-radio)
 
 ## Tech Stack
 
